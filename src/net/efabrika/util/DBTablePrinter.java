@@ -461,7 +461,12 @@ public class DBTablePrinter {
             // Go through each row, get values of each column and adjust
             // column widths.
             int rowCount = 0;
-            while (rs.next()) {
+            if ( ! rs.isAfterLast() ) // No rows are printed if the RS advanced too far already
+            {
+                if ( rs.isBeforeFirst() ) // Ensure starting from the first record
+                {
+                    rs.next();
+                }
 
                 // NOTE: columnIndex for rs.getXXX methods STARTS AT 1 NOT 0
                 for (int i = 0; i < columnCount; i++) {
@@ -508,7 +513,7 @@ public class DBTablePrinter {
                 } // END of for loop columnCount
                 rowCount++;
 
-            } // END of while (rs.next)
+            } while ( rs.next() );
 
             /*
             At this point we have gone through meta data, get the
